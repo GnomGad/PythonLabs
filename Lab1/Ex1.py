@@ -131,7 +131,7 @@ def Ex6():
 
 def Ex7():
     ReadCSV(num=7)
-    base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org"]
+    base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org","www.sven"]
     http = "http://"
     www = "www."
     com = ".com"
@@ -178,8 +178,127 @@ def Ex8_1(array,add):
         array.append(random.randint(0,100))
     return array 
 
+
+
+def Ex9():
+    money = {1000:1,500:10,100:10,50:10,10:1}
+    allMoney = Ex9_DictToMoney(money)
+    userMoney = 0
+    try:
+        print("Банкомат имеет: ",allMoney)
+        userMoney = int(input("Какую сумму выхотите обналичить?\n"))
+        if userMoney%10 != 0:
+            raise Exception("Банкомат не выдает мелочь") #Exception("у нас нет мелких денег")
+        print(money)
+        Ex9_ToCount(money,userMoney)
+    except ValueError:
+        print("Вы ввели что-то лишнее")
+    except Exception as e:
+        print(e)
+    
+def Ex9_MoneyToDict(x):
+    thousand = int(x / 1000)//1
+    fivehundred = int((x - 1000*thousand)/500) //1
+    hundred = int((x - 1000*thousand - 500*fivehundred)/100)//1
+    fifty = int((x - 1000*thousand - 500*fivehundred - 100*hundred)/50)//1
+    ten = int((x - 1000*thousand - 500*fivehundred - 100*hundred - 50*fifty)/10)//1
+    money = {1000:thousand,500:fivehundred,100:thousand,50:fifty,10:ten}
+    return money
+
+def Ex9_DictToMoney(x):
+    money = x[1000]*1000 +x[500]*500+x[100]*100+x[50]*50+x[10]*10
+    return money
+
+def Ex9_ToCount(xList,xInt):
+    if(Ex9_DictToMoney(xList)< xInt):
+        print("Нужной суммы нет в наличии")
+        return 0
+    xList,xInt = Ex9_ForCount(xList,xInt,1000)
+    xList,xInt = Ex9_ForCount(xList,xInt,500)
+    xList,xInt = Ex9_ForCount(xList,xInt,100)
+    xList,xInt = Ex9_ForCount(xList,xInt,50)
+    xList,xInt = Ex9_ForCount(xList,xInt,10)
+    print(xList)
+    print(Ex9_DictToMoney(xList))
+
+def Ex9_ForCount(xBank,xUser,div):
+    needed = (xUser/div)//1 # то что требуем от банка
+    take = xBank[int(div)] - needed # берем у банка
+    realTake = take+needed if take<0 else needed # если - то банк дать не может, а значит считаем сколько может дать, если + то забираем что дает
+    xUser = xUser - div*realTake # отдаем юзеру его купюры
+    xBank[int(div)] =int( xBank[int(div)]-realTake) # говорим банку сколько у него купюр этого типа
+    return xBank,int(xUser) # ретурним
+        
+def Ex10():
+    ABC = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮQWERTYUIOPASDFGHJKLZXCVBNM"
+    abc  = ABC.lower()
+    badPasswords = list()
+    with open("Passwords.txt", "r") as file:
+        badPasswords = file.readlines()
+    password = input("Введите пароль\n ")
+    if(len(password)>141):
+        print("Пароль прошел проверку")
+        return 0
+    if len(password) <8:
+        print("Пароль не прошел проверку")
+        return 0
+    if password+"\n" in badPasswords:
+        print("Пароль не прошел проверку")
+        return 0
+    for i in abc:
+        if password == i* len(password):
+            print("Пароль не прошел проверку")
+            return 0
+    for i in ABC:
+        if password == i* len(password):
+            print("Пароль не прошел проверку")
+            return 0
+    print("Пароль прошел проверку")
+
+
+
+      
+def Ex11():
+    for i in frange(1,0,-0.1):
+        print(i)
+    pass
+
+def frange(start, stop, step):
+    i = start
+    flag = True
+    if start> stop and step <0:
+        flag = False
+
+    while i < stop-step and flag:
+        yield round(i,1)
+        i += step
+
+    while i > stop-step and not flag:
+        yield round(i,1)
+        i += step
+
+def Ex12():
+    pass
+
+def Ex13():
+    x = [1,3,4,2]
+    for i, elem, cum, frac in extra_enumerate(x):
+        print(elem, cum, frac)
+    
+def extra_enumerate(x):
+    cum=0
+    summ = 0
+    for i in x:
+        summ += i
+    for i in range(len(x)):
+        cum += x[i]
+        yield i,x[i],cum, cum/summ
+    
+#Сделать 12,14,15,16
+
 base = "base"
 basegood ="basegood"
 basebad = "basebad"
-Ex7()
+
+Ex13()
 
