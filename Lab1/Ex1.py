@@ -131,7 +131,7 @@ def Ex6():
 
 def Ex7():
     ReadCSV(num=7)
-    base = ["www.bibaANDboba.ru","borisBAD.com","www.sven.com"]
+    base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org"]
     http = "http://"
     www = "www."
     com = ".com"
@@ -143,7 +143,14 @@ def Ex7():
             if com not in i:
                 string = string+ com
             strings.append(string)
+
+    res = [http + i for i in base if(www in i)]
+    fullres = [i+com if(com not in i)else i for i in res]
+
     print(strings)
+    print(fullres)
+
+    
 
 def Ex8():
     ReadCSV(num=8)
@@ -174,5 +181,5 @@ def Ex8_1(array,add):
 base = "base"
 basegood ="basegood"
 basebad = "basebad"
-Ex8()
+Ex7()
 
