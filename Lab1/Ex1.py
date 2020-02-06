@@ -4,6 +4,7 @@ newpath = sys.path.append(sys.path[0].replace("Lab1",""))
 from MyTools import ReadCSV
 
 import random
+import itertools
 
 def Ex1():
     ReadCSV(num=1)
@@ -93,8 +94,6 @@ def Ex4():
         for j in arr:
             if i == len(j):
                 print(j)
-        
-    
 
 def Ex5():
     ReadCSV(num=5)
@@ -128,7 +127,6 @@ def Ex6():
             string = string+ i
     print(string)
 
-
 def Ex7():
     ReadCSV(num=7)
     base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org","www.sven"]
@@ -149,8 +147,6 @@ def Ex7():
 
     print(strings)
     print(fullres)
-
-    
 
 def Ex8():
     ReadCSV(num=8)
@@ -177,8 +173,6 @@ def Ex8_1(array,add):
     for i in range(1,add+1):
         array.append(random.randint(0,100))
     return array 
-
-
 
 def Ex9():
     money = {1000:1,500:10,100:10,50:10,10:1}
@@ -254,9 +248,6 @@ def Ex10():
             print("Пароль не прошел проверку")
             return 0
     print("Пароль прошел проверку")
-
-
-
       
 def Ex11():
     for i in frange(1,0,-0.1):
@@ -294,11 +285,109 @@ def extra_enumerate(x):
         cum += x[i]
         yield i,x[i],cum, cum/summ
     
-#Сделать 12,14,15,16
+def Ex14():
+    print(get_pages())
 
+def non_empty(fn):
+    def wrapper():
+        return[i for i in fn() if i != '' and i != None]
+    return wrapper
+
+@non_empty
+def get_pages():
+    return ['chapter1', '', 'contents', '', 'line1']
+
+def Ex15():
+    plot_signal([i for i in range(10)])
+    
+
+def pre_process(a=0.97):
+    def decoratour(fn):
+        def wrapper(s):
+            return  fn([i-a*s[s.index(i)-1] for i in s] )
+        return wrapper
+    return decoratour
+
+@pre_process(a=0.93)
+def plot_signal(s):
+    for sample in s:
+        print(sample)
+
+def Ex16():
+    print("---Комманды участники---")
+    Grid = Ex16_Generate16Teams()
+    date = {"day":14,"month":9,"year":2020,"wednesday":16,"isplay":1}
+    for i in Grid:
+        print(i)
+    
+    #print(Grid)
+    Ex16_PrintGrid(Grid,1)
+    Ex16_PrintGrid(Grid,2)
+    Ex16_PrintGrid(Grid,3)
+    Ex16_PrintGrid(Grid,4)
+    print("\n")
+    Ex16_Game(Grid,date)
+
+def Ex16_Game(Grid,date):
+    matches = 1
+    daysofmounth={9:30,10:31,11:30,12:31,1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31}
+    while matches <16:
+        date["day"]+=1 # апаем день и творим магию
+        if(date["day"] == date["wednesday"]): # если день это среда
+            date["wednesday"]+=7 # бафаем на некст среду
+            if date["isplay"]:
+                print("Матч %i будет %i/%i/%i" % (matches,date["day"], date["month"], date["year"]))
+                matches+=1
+            date["isplay"] = (date["isplay"]+1)%2 # выставляем возможность играть
+        if(date["wednesday"] > daysofmounth[date["month"]]): #если дней стало больше чем надо в этом месяце
+            #то мы должны от того, что получилось отнять количество дней в некст месяце
+            date["wednesday"] -= daysofmounth[date["month"]] if date["month"]+1 <=12 else daysofmounth[1]
+        if date["day"] > daysofmounth[date["month"]]: #день вышел за ренж
+            date["day"] = 1
+            date["month"]+=1
+        if date["month"]>12:
+            date["month"] = 1
+            date["year"] +=1
+        
+def Ex16_PrintGrid(grid,itoe):
+    print("----Сетка ",itoe,"----")
+    for i in grid:
+        if grid[i] == itoe:
+            print(i) 
+    
+def Ex16_Generate16Teams():
+    wordsA = "УЕАОЯИЫ".lower()
+    wordsB = "ЙЦКГШЩЗХФВПРЛДЖЧСМТБ".lower()
+    aLen = len(wordsA)
+    bLen = len(wordsB)
+    xList = dict()
+    counts = [4,4,4,4]
+    counter = 4
+    while len(xList) <16:
+        nameLen = random.randint(3,12)
+        name = ""
+        
+        reverse = random.randint(0,1)
+        for i in range(nameLen):
+            if (i+reverse) % 2 ==0:
+                name += wordsA[random.randint(0,aLen-1)]
+            else:
+                name += wordsB[random.randint(0,bLen-1)]
+        name = name[0].upper() + name[1:nameLen]
+
+        while True:
+            if counter == 0:
+                break
+            r = random.randint(0,counter-1)
+            if counts[r] > 0:
+                xList[name] = r+1
+                counts[r]-=1
+                break
+    return xList
+
+#Сделать 12
 base = "base"
 basegood ="basegood"
 basebad = "basebad"
 
-Ex13()
-
+Ex12()
