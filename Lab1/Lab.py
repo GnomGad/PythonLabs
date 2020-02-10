@@ -5,6 +5,7 @@ newpath = sys.path.append(sys.path[0].replace("Lab1",""))
 
 import random
 import itertools
+import math
 
 def Ex1():
     try:
@@ -23,82 +24,25 @@ def Ex3():
 def Ex4():
     arr = input("Введите текст\n").split(" ")
     [print(i) for i in[print(i) if(i != None and len(i)<7 and len(i)>3 ) else i for i in[print(i) if len(i)>6 else i for i in arr]]if i!=None and len(i)<4]
-    
-def Ex5():
-    ABC = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
-    baseStroka = "город Донецк ,река Кальмиус"
-    startStroka = input("Ввод текста\n")
-    if startStroka == base:
-        startStroka = baseStroka
-        print(startStroka)
-    firstSplitStroka = startStroka.split(" ")
-    count = 0
-    for i in firstSplitStroka:
-        if i[0] in ABC or (i[0]=="," and i[0] in ABC):
-            firstSplitStroka[count] = firstSplitStroka[count].upper()
-        count+=1
-    endStroka = " ".join(firstSplitStroka)
-    print(endStroka)
 
+def Ex5():
+    print(" ".join([i.upper() if i[0].isupper() else i for i in input("Ввод:\n").split(" ") ]))
+    
 def Ex6():
-    myDict = dict()
-    string = input("Введите символы:\n")
-    for i in string:
-        myDict[i] = 0
-    for i in string:
-        myDict[i] = myDict[i]+1
-            
-    string =""
-    for i in myDict:
-        if myDict[i] == 1:
-            string = string+ i
-    print(string)
+    mass = list(input("Введи текст\n"))
+    print("".join([i for i in mass if mass.count(i)==1]))
 
 def Ex7():
-    base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org","www.sven"]
-    http = "http://"
-    www = "www."
-    com = ".com"
-    strings = list()
-    for i in base:
-        string=""
-        if www in i:
-            string = http+i
-            if com not in i:
-                string = string+ com
-            strings.append(string)
-
-    res = [http + i for i in base if(www in i)]
-    fullres = [i+com if(com not in i)else i for i in res]
-
-    print(strings)
-    print(fullres)
+    base = ["www.bibANDbob.ru","borisBAD.com","www.sven.org","www.svarm"]
+    print(" ".join([i+".com" if(".com" not in i)else i for i in ["http://" + i for i in base if("www." in i)]]))
 
 def Ex8():
-    n = random.randint(0,10000)
-    pow = 1
-    array = list()
-    while n > 0:
-        n = n-1
-        array.append(random.randint(0,100))   
-    if(n<=2):
-        for i in range(len(array),2):
-            array.append(random.randint(0,100))
+    array = [random.randint(0,100) for i in range(0,random.randint(0,10000))]
     print("Было элементов",len(array))
-    while True:
-        if 2 ** pow <= len(array) and len(array) <= 2**(pow+1): #между двумя значениями
-            print("между ",2**pow," и ",2**(pow+1))
-            array = Ex8_1(array,2**(pow+1)-len(array))
-            break
-        pow = pow+1
+    [array.append(random.randint(0,100)) for i in range(len(array),2**math.ceil(math.log2(len(array))))]
     print("Стало элементов",len(array))
-    print(array)
     
-def Ex8_1(array,add):
-    for i in range(1,add+1):
-        array.append(random.randint(0,100))
-    return array 
-
+Ex8()
 def Ex9():
     money = {1000:1,500:10,100:10,50:10,10:1}
     allMoney = Ex9_DictToMoney(money)
