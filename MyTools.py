@@ -50,5 +50,5 @@ def Main(x=0):
     input("\n---TO CONTINUE PRESS ENTER---")
 
 numLab = 1 #Текущая лаба
-numEx = 0 # 0 - пройтись по всем 0< выбрать номер
+numEx = 1 # 0 - пройтись по всем 0< выбрать номер
 Main(numEx)
