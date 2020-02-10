@@ -42,55 +42,19 @@ def Ex8():
     [array.append(random.randint(0,100)) for i in range(len(array),2**math.ceil(math.log2(len(array))))]
     print("Стало элементов",len(array))
     
-Ex8()
 def Ex9():
     money = {1000:1,500:10,100:10,50:10,10:1}
-    allMoney = Ex9_DictToMoney(money)
-    userMoney = 0
-    try:
-        print("Банкомат имеет: ",allMoney)
-        userMoney = int(input("Какую сумму выхотите обналичить?\n"))
-        if userMoney%10 != 0:
-            raise Exception("Банкомат не выдает мелочь") #Exception("у нас нет мелких денег")
-        print(money)
-        Ex9_ToCount(money,userMoney)
-    except ValueError:
-        print("Вы ввели что-то лишнее")
-    except Exception as e:
-        print(e)
-    
-def Ex9_MoneyToDict(x):
-    thousand = int(x / 1000)//1
-    fivehundred = int((x - 1000*thousand)/500) //1
-    hundred = int((x - 1000*thousand - 500*fivehundred)/100)//1
-    fifty = int((x - 1000*thousand - 500*fivehundred - 100*hundred)/50)//1
-    ten = int((x - 1000*thousand - 500*fivehundred - 100*hundred - 50*fifty)/10)//1
-    money = {1000:thousand,500:fivehundred,100:thousand,50:fifty,10:ten}
-    return money
-
-def Ex9_DictToMoney(x):
-    money = x[1000]*1000 +x[500]*500+x[100]*100+x[50]*50+x[10]*10
-    return money
-
-def Ex9_ToCount(xList,xInt):
-    if(Ex9_DictToMoney(xList)< xInt):
-        print("Нужной суммы нет в наличии")
+    user = int(input("Введите сумму: "))
+    if money[1000]*1000+money[500]*500+money[100]*100+money[50]*50+money[10]*10 < user:
+        print("В банкомате нет столько денег")
         return 0
-    xList,xInt = Ex9_ForCount(xList,xInt,1000)
-    xList,xInt = Ex9_ForCount(xList,xInt,500)
-    xList,xInt = Ex9_ForCount(xList,xInt,100)
-    xList,xInt = Ex9_ForCount(xList,xInt,50)
-    xList,xInt = Ex9_ForCount(xList,xInt,10)
-    print(xList)
-    print(Ex9_DictToMoney(xList))
+    [print("Было ",mul,":",money[mul],"Стало",mul,":",money[mul]-i) for i, mul in Ex9_Generator(money,user)]
 
-def Ex9_ForCount(xBank,xUser,div):
-    needed = (xUser/div)//1 # то что требуем от банка
-    take = xBank[int(div)] - needed # берем у банка
-    realTake = take+needed if take<0 else needed # если - то банк дать не может, а значит считаем сколько может дать, если + то забираем что дает
-    xUser = xUser - div*realTake # отдаем юзеру его купюры
-    xBank[int(div)] =int( xBank[int(div)]-realTake) # говорим банку сколько у него купюр этого типа
-    return xBank,int(xUser) # ретурним
+def Ex9_Generator(bank,user):
+    for i in bank:
+        tmp = (user/i)//1 if (user/i)//1 <= bank[i] else bank[i]
+        user -= tmp*i
+        yield int(tmp), i
         
 def Ex10():
     ABC = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮQWERTYUIOPASDFGHJKLZXCVBNM"
