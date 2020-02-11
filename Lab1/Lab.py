@@ -6,6 +6,8 @@ newpath = sys.path.append(sys.path[0].replace("Lab1",""))
 import random
 import itertools
 import math
+import re
+import datetime
 
 def Ex1():
     try:
@@ -19,7 +21,7 @@ def Ex2():
     
 def Ex3():
     snumber = input("Ввод: ").replace(" ","")
-    print(snumber.replace(snumber[4:12],'*'*8)) if len(snumber) == 16 else print("Неверно введенный номер")
+    print(snumber[:4] + "*"*8 + snumber[-4:]) if len(snumber) == 16 else print("Неверно введенный номер")
 
 def Ex4():
     arr = input("Введите текст\n").split(" ")
@@ -83,24 +85,16 @@ def Ex10():
     print("Пароль прошел проверку")
       
 def Ex11():
-    for i in frange(1,0,-0.1):
-        print(i)
-    pass
+    [print(i) for i in frange(0,1,0.1)]
 
 def frange(start, stop, step):
     i = start
-    flag = True
-    if start> stop and step <0:
-        flag = False
-
-    while i < stop-step and flag:
-        yield round(i,1)
-        i += step
-
-    while i > stop-step and not flag:
-        yield round(i,1)
-        i += step
-
+    if start > stop and step <0:
+        start,stop = stop,start
+    while (step>0 and i < stop)or(step <0 and i<=stop and i>start):
+        yield i
+        i = round(i + step,1)
+        
 def Ex12():
     [print(i) for i in get_frames(range(1,10),4,0.5)]
 
@@ -112,14 +106,11 @@ def Ex13():
     [print(elem, cum, frac) for i, elem, cum, frac in extra_enumerate([1,3,4,2])]
     
 def extra_enumerate(x):
-    cum=0
-    summ = 0
-    for i in x:
-        summ += i
+    summ,cum = list(itertools.accumulate(x))[-1],0
     for i in range(len(x)):
         cum += x[i]
         yield i,x[i],cum, cum/summ
-    
+
 def Ex14():
     print(get_pages())
 
@@ -144,81 +135,22 @@ def pre_process(a=0.97):
 
 @pre_process(a=0.93)
 def plot_signal(s):
-    for sample in s:
-        print(sample)
+    [print(sample) for sample in s]
+
 
 def Ex16():
-    print("---Комманды участники---")
-    Grid = Ex16_Generate16Teams()
-    date = {"day":14,"month":9,"year":2020,"wednesday":16,"isplay":1}
-    for i in Grid:
-        print(i)
-    Ex16_PrintGrid(Grid,1)
-    Ex16_PrintGrid(Grid,2)
-    Ex16_PrintGrid(Grid,3)
-    Ex16_PrintGrid(Grid,4)
-    print("\n")
-    Ex16_Game(Grid,date)
+    now = datetime.datetime.now()
+    start = datetime.datetime(now.year,9,14,22,45)
+    teams = ["Англия","Португалия","Аргентина","Россия","Италия","Китай","Казахстан","Польша","Германия","Франция","Мадагаскар","Афганистан","Украина","Эстония","Канада","Тунис"]
+    random.shuffle(teams)
+    teams = [teams[i*4:i*4+4] for i in range(0,4)]
+    groups = [i for i in[i for i in itertools.combinations(teams, 4)]]
+    [print("Группа №",i+1,groups[0][i]) for i in range(0,4)]
+    for i in range(1,16):
+        print ("Игра #",i,start.strftime("%d/%m/%Y %H:%M"))
+        start+=datetime.timedelta(days=14)
 
-def Ex16_Game(Grid,date):
-    matches = 1
-    daysofmounth={9:30,10:31,11:30,12:31,1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31}
-    while matches <16:
-        date["day"]+=1 # апаем день и творим магию
-        if(date["day"] == date["wednesday"]): # если день это среда
-            date["wednesday"]+=7 # бафаем на некст среду
-            if date["isplay"]:
-                print("Матч %i будет %i/%i/%i" % (matches,date["day"], date["month"], date["year"]))
-                matches+=1
-            date["isplay"] = (date["isplay"]+1)%2 # выставляем возможность играть
-        if(date["wednesday"] > daysofmounth[date["month"]]): #если дней стало больше чем надо в этом месяце
-            #то мы должны от того, что получилось отнять количество дней в некст месяце
-            date["wednesday"] -= daysofmounth[date["month"]] if date["month"]+1 <=12 else daysofmounth[1]
-        if date["day"] > daysofmounth[date["month"]]: #день вышел за ренж
-            date["day"] = 1
-            date["month"]+=1
-        if date["month"]>12:
-            date["month"] = 1
-            date["year"] +=1
-        
-def Ex16_PrintGrid(grid,itoe):
-    print("----Сетка ",itoe,"----")
-    for i in grid:
-        if grid[i] == itoe:
-            print(i) 
-    
-def Ex16_Generate16Teams():
-    wordsA = "УЕАОЯИЫ".lower()
-    wordsB = "ЙЦКГШЩЗХФВПРЛДЖЧСМТБ".lower()
-    aLen = len(wordsA)
-    bLen = len(wordsB)
-    xList = dict()
-    counts = [4,4,4,4]
-    counter = 4
-    while len(xList) <16:
-        nameLen = random.randint(3,12)
-        name = ""
-        
-        reverse = random.randint(0,1)
-        for i in range(nameLen):
-            if (i+reverse) % 2 ==0:
-                name += wordsA[random.randint(0,aLen-1)]
-            else:
-                name += wordsB[random.randint(0,bLen-1)]
-        name = name[0].upper() + name[1:nameLen]
+Const_NumExample = 16 #"Константа" 
 
-        while True:
-            if counter == 0:
-                break
-            r = random.randint(0,counter-1)
-            if counts[r] > 0:
-                xList[name] = r+1
-                counts[r]-=1
-                break
-    return xList
-#базовые строки
-base = "base"
-basegood ="basegood"
-basebad = "basebad"
-#"Константа" в этом модуле не используется
-Const_NumExample = 16
+if  __name__ == "__main__":
+    pass
