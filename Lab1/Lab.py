@@ -144,7 +144,7 @@ def Ex16():
     teams = ["Англия","Португалия","Аргентина","Россия","Италия","Китай","Казахстан","Польша","Германия","Франция","Мадагаскар","Афганистан","Украина","Эстония","Канада","Тунис"]
     random.shuffle(teams)
     teams = [teams[i*4:i*4+4] for i in range(0,4)]
-    groups = [i for i in[i for i in itertools.combinations(teams, 4)]]
+    groups = [i for i in itertools.combinations(teams, 4)]
     [print("Группа №",i+1,groups[0][i]) for i in range(0,4)]
     for i in range(1,16):
         print ("Игра #",i,start.strftime("%d/%m/%Y %H:%M"))
