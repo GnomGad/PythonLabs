@@ -1,22 +1,22 @@
 import os
+import hashlib
+
 
 def Ex1():
     rus = "йцукенгшщзхъфывапролджэячсмитьбюё"
     eng = "qwertyuiopasdfghjklzxcvbnm"
-    with open("Ex1Text.txt", "r") as file:
+    Ex1_Result(rus,"Ex1Text.txt")
+
+
+def Ex1_Result(lang,path):
+    with open(path, "r") as file:
         text = file.read().lower()
-        drus = {i:text.count(i) for i in rus}
-        deng = {i:text.count(i) for i in eng}
-        print("---РУССКИЙ---")
-        dp = list(drus.items())
-        dp.sort(key=lambda i: i[1], reverse=True)
-        [print(i[0],"-",round(i[1]/len(drus),2),"%") for i in dp]
-        print("---ENGLISH---")
-        dp = list(deng.items())
-        dp.sort(key=lambda i: i[1], reverse=True)
-        [print(i[0],"-",round(i[1]/len(deng),2),"%") for i in dp]
+        dtext = {i:text.count(i) for i in lang}
+        [print(i[0],"-",round(i[1]/len(dtext),2),"%") for i in sorted(dtext.items(),key = lambda i: i[1],reverse=True)]
+    
 
-
+def Ex2():
+    pass
 
 
 Ex1()
