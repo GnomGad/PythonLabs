@@ -16,7 +16,17 @@ def Ex1_Result(lang,path):
     
 
 def Ex2():
-    pass
+    path = os.getcwd()
+    hashes = {}
+
+    for filename in os.listdir(path):
+        if os.path.isfile(filename):
+            with open(filename, "rb") as file:
+                hashes.setdefault(hashlib.md5(file.read()).digest(),[]).append(filename)
+
+    for  filenames in hashes:   
+        if len(hashes[filenames]) > 1:
+            print("---Файлы Копии---\n", ", ".join(hashes[filenames]), sep="")
 
 
-Ex1()
+Ex2()   
