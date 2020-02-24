@@ -1,7 +1,7 @@
 import os
 import hashlib
 import random
-
+import re
 
 def Ex1():
     rus = "йцукенгшщзхъфывапролджэячсмитьбюё"
@@ -75,6 +75,38 @@ def Ex3_GetList(path):
         return file.readlines()
 
 
+def Ex4():
+    lst = []
+
+    reg = "(:(-)?[\)]+)|\){3,}"
+    while True:
+        t = input()
+        if t == "":
+            break
+        else:
+            lst.append(t)
+            
+    [print("Строка,",i,"позиция",j,": найдено",res) for i, j, res in TestReg(lst,reg)]
+        
+
+def TestReg(lst,reg):
+    for i in range(len(lst)):
+        parser = re.search(reg,lst[i])
+        count =0
+        while parser!=None:
+            yield i+1,parser.regs[0][0]+count+1,parser.group()
+            count+=parser.regs[0][1]
+            lst[i] = lst[i][parser.regs[0][1]:]
+            parser = re.search(reg,lst[i])
+            
+
+def Ex5():
+    reg = "[A-ZА-ЯЁ][A-ZА-ЯЁa-zа-яё]+([0-9]{4}$|[0-9]{2}$)"
+    [print(res) for i, j, res in TestReg(input().split(),reg)]
+
+    
+        
 
 
-Ex3()   
+
+Ex5()   
