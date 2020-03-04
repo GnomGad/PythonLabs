@@ -2,6 +2,8 @@ import os
 import hashlib
 import random
 import re
+import subprocess
+
 
 def Ex1():
     rus = "йцукенгшщзхъфывапролджэячсмитьбюё"
@@ -105,8 +107,12 @@ def Ex5():
     [print(res) for i, j, res in TestReg(input().split(),reg)]
 
     
-        
+def Ex6():
+    subprocess.call("reorganize.py --source \"D:\\TestDir\" --days 2 --size 4096",shell=True)
 
 
+def Ex7():
+    subprocess.call("trackmix.py -s \"D:\\Application\\Git\\PythonLabs\\Lab2\\TestM\" -d \"kek.mp3\" -f 15 -l --extended",shell=True)
 
-Ex5()   
+
+Ex7()   
