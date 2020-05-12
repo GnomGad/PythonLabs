@@ -1,5 +1,6 @@
 import csv
 import Lab1.Lab as lab1
+import Lab2.Lab as lab2
 FILENAME = "descriptions.csv"
 
 def WriteCSV(name):
@@ -49,6 +50,6 @@ def Main(x=0):
     eval(strLaunchEx)
     input("\n---TO CONTINUE PRESS ENTER---")
 
-numLab = 1 #Текущая лаба
-numEx = 1 # 0 - пройтись по всем 0< выбрать номер
+numLab = 2 #Текущая лаба
+numEx = 0 # 0 - пройтись по всем 0< выбрать номер
 Main(numEx)
