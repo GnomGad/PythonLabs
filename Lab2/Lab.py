@@ -115,4 +115,4 @@ def Ex7():
     subprocess.call("trackmix.py -s \"D:\\Application\\Git\\PythonLabs\\Lab2\\TestM\" -d \"kek.mp3\" -f 15 -l --extended",shell=True)
 
 
-Ex7()   
+Ex4()   
